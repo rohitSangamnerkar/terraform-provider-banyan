@@ -71,3 +71,43 @@ type GetRole struct {
 	IsEnabled        bool
 	UnmarshalledSpec CreateRole
 }
+
+type ListSecurityRoleResponse struct {
+	Roles []V2SecurityRoleInfo `json:"roles"`
+	Count int64                `json:"count"`
+}
+
+type V2SecurityRoleInfo struct {
+	ID                 string `json:"id"`
+	Name               string `json:"name"`
+	OrgID              string `json:"org_id"`
+	Spec               string `json:"spec"`
+	CreatedBy          string `json:"created_by"`
+	CreatedAt          int64  `json:"created_at"`
+	LastUpdatedBy      string `json:"last_updated_by"`
+	LastUpdatedAt      int64  `json:"last_updated_at"`
+	Description        string `json:"description"`
+	Type               string `json:"type"`
+	Version            int64  `json:"version"`
+	DeletedBy          string `json:"deleted_by"`
+	DeletedAt          int64  `json:"deleted_at"`
+	Enabled            string `json:"enabled"`
+	DeviceCount        uint64 `json:"device_count"`
+	PolicyCount        uint64 `json:"policy_count"`
+	ThreatProfileCount uint64 `json:"threat_profile_count"`
+	Active             bool   `json:"active"`
+}
+
+type V2Resp struct {
+	RequestID        string             `json:"request_id"`
+	ErrorCode        int                `json:"error_code"`
+	ErrorDescription string             `json:"error_description"`
+	Data             V2SecurityRoleInfo `json:"data"`
+}
+
+type V2ListResp struct {
+	RequestID        string                   `json:"request_id"`
+	ErrorCode        int                      `json:"error_code"`
+	ErrorDescription string                   `json:"error_description"`
+	Data             ListSecurityRoleResponse `json:"data"`
+}

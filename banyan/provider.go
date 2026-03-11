@@ -47,6 +47,7 @@ func Provider() *schema.Provider {
 			"banyan_app_config":                 resourceAppConfig(),
 			"banyan_registered_domain":          resourceRegisteredDomain(),
 			"banyan_validate_registered_domain": resourceValidateRegisteredDomain(),
+			"banyan_security_role":              resourceRoleV2(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"banyan_oidc_settings": dataSourceOidcSettings(),
