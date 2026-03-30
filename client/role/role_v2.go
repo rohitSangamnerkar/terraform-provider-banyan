@@ -3,6 +3,7 @@ package role
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 
 	"github.com/banyansecurity/terraform-banyan-provider/client/restclient"
 )
@@ -27,6 +28,7 @@ type ClientV2 interface {
 	CreateRole(role CreateRole) (created V2SecurityRoleInfo, err error)
 	UpdateRole(role CreateRole) (updated V2SecurityRoleInfo, err error)
 	DeleteRole(id string) (err error)
+	GetByName(name string) (role V2SecurityRoleInfo, err error)
 }
 
 func (r *RoleV2) GetRole(id string) (role V2SecurityRoleInfo, err error) {
@@ -101,6 +103,38 @@ func (r *RoleV2) DeleteRole(id string) (err error) {
 	if err != nil {
 		return
 	}
+
+	return
+}
+
+func (r *RoleV2) GetByName(name string) (role V2SecurityRoleInfo, err error) {
+	path := fmt.Sprintf("%s/%s", apiVersionV2, securityRolePath)
+	myUrl, err := url.Parse(path)
+	if err != nil {
+		return
+	}
+
+	query := myUrl.Query()
+	query.Set("name", name)
+	myUrl.RawQuery = query.Encode()
+
+	response, err := r.restClient.ReadQuery(component, query, path)
+	if err != nil {
+		return
+	}
+
+	var resp V2ListResp
+	err = json.Unmarshal(response, &resp)
+	if err != nil {
+		return
+	}
+
+	if len(resp.Data.Roles) == 0 {
+		err = fmt.Errorf("could not find role with name %s", name)
+		return
+	}
+
+	role = resp.Data.Roles[0]
 
 	return
 }

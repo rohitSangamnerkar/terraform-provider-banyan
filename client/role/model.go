@@ -1,5 +1,13 @@
 package role
 
+import (
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+)
+
+const(
+	DefaultAPIVersion = "v1"
+)
+
 // Info represents the specification of a role populated by json.Unmarshal.
 type Info struct {
 	Kind       string `json:"kind"`
@@ -110,4 +118,48 @@ type V2ListResp struct {
 	ErrorCode        int                      `json:"error_code"`
 	ErrorDescription string                   `json:"error_description"`
 	Data             ListSecurityRoleResponse `json:"data"`
+}
+
+func SetRoleStateFromSpec(d *schema.ResourceData, spec CreateRole) (err error) {
+	err = d.Set("container_fqdn", spec.Spec.ContainerFQDN)
+	if err != nil {
+		return err
+	}
+	err = d.Set("image", spec.Spec.Image)
+	if err != nil {
+		return err
+	}
+	err = d.Set("repo_tag", spec.Spec.RepoTag)
+	if err != nil {
+		return err
+	}
+	err = d.Set("user_group", spec.Spec.UserGroup)
+	if err != nil {
+		return err
+	}
+	err = d.Set("email", spec.Spec.Email)
+	if err != nil {
+		return err
+	}
+	err = d.Set("device_ownership", spec.Spec.DeviceOwnership)
+	if err != nil {
+		return err
+	}
+	err = d.Set("platform", spec.Spec.Platform)
+	if err != nil {
+		return err
+	}
+	err = d.Set("known_device_only", spec.Spec.KnownDeviceOnly)
+	if err != nil {
+		return err
+	}
+	err = d.Set("mdm_present", spec.Spec.MDMPresent)
+	if err != nil {
+		return err
+	}
+	err = d.Set("serial_numbers", spec.Spec.SerialNumbers)
+	if err != nil {
+		return err
+	}
+	return
 }
